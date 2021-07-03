@@ -65,7 +65,14 @@ public class AccountManager {
 
         Account account = accountMap.get(id);
 
-        if (!account.canWithdraw()) {
+        /*if (!account.canWithdraw()) {
+            System.out.println("in");
+            return;
+        }*/
+        if (account.getAccountType().equals(AccountType.SAVINGS) && account.getBalance()-amount<=100){
+            double maxWithdraw = account.getBalance() - 101;
+            System.out.println("You just can withdraw " +  maxWithdraw + " in your saving account");
+            System.out.println();
             return;
         }
 
@@ -83,6 +90,12 @@ public class AccountManager {
 
         Account srcAccount = accountMap.get(srcId);
         Account dstAccount = accountMap.get(dstId);
+        if (srcAccount.getAccountType().equals(AccountType.SAVINGS) && srcAccount.getBalance()-amount<=100){
+            double maxWithdraw = srcAccount.getBalance() - 101;
+            System.out.println("You just can Transfer " +  maxWithdraw + " from your saving account");
+            System.out.println();
+            return;
+        }
 
         // make sure transaction can be performed
         if (srcAccount.canDebit(amount) && dstAccount.canCredit(amount)) {

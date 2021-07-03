@@ -63,4 +63,11 @@ public class Customer {
         return balance;
     }
 
+    public boolean hasAccount(int ID){
+        if (accounts.containsKey(ID)){
+            return true;
+        }
+        return false;
+    }
+
 }

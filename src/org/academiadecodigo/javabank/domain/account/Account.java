@@ -52,6 +52,9 @@ public abstract class Account {
         if (canCredit(amount)) {
             balance += amount;
         }
+        else{
+            System.out.println("Can't Deposit this amount");
+        }
     }
 
     /**
@@ -64,6 +67,9 @@ public abstract class Account {
         if (canDebit(amount)) {
             balance -= amount;
         }
+        else{
+            System.out.println("can't withdraw this amount");
+        }
     }
 
     /**
@@ -73,6 +79,7 @@ public abstract class Account {
      * @return {@code true} if the account can be credited
      */
     public boolean canCredit(double amount) {
+
         return amount > 0;
     }
 
@@ -83,6 +90,7 @@ public abstract class Account {
      * @return {@code true} if the account can be debited
      */
     public boolean canDebit(double amount) {
+
         return amount > 0 && amount <= balance;
     }
 
@@ -92,6 +100,7 @@ public abstract class Account {
      * @return {@code true} if withdraw can be done
      */
     public boolean canWithdraw() {
+
         return true;
     }
 }
