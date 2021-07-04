@@ -17,8 +17,8 @@ public class CustomerTest {
             return false;
         }
 
-        int a1 = customer.openAccount(AccountType.CHECKING);
-        int a2 = customer.openAccount(AccountType.SAVINGS);
+        int a1 = customer.openAccount(AccountType.CHECKING, "");
+        int a2 = customer.openAccount(AccountType.SAVINGS, "");
         accountManager.deposit(a1, 100);
         accountManager.deposit(a2, 120);
 

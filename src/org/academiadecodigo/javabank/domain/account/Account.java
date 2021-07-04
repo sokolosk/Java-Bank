@@ -1,5 +1,7 @@
 package org.academiadecodigo.javabank.domain.account;
 
+import org.academiadecodigo.javabank.domain.Customer;
+
 /**
  * A generic account domain entity to be used as a base for concrete types of accounts
  */
@@ -51,8 +53,7 @@ public abstract class Account {
     public void credit(double amount) {
         if (canCredit(amount)) {
             balance += amount;
-        }
-        else{
+        } else {
             System.out.println("Can't Deposit this amount");
         }
     }
@@ -66,8 +67,7 @@ public abstract class Account {
     public void debit(double amount) {
         if (canDebit(amount)) {
             balance -= amount;
-        }
-        else{
+        } else {
             System.out.println("can't withdraw this amount");
         }
     }

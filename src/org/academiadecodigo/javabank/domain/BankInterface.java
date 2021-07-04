@@ -3,6 +3,7 @@ package org.academiadecodigo.javabank.domain;
 import org.academiadecodigo.bootcamp.Prompt;
 import org.academiadecodigo.bootcamp.scanners.integer.IntegerInputScanner;
 import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
+import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
 import org.academiadecodigo.javabank.domain.account.Account;
 import org.academiadecodigo.javabank.domain.account.AccountType;
 import org.academiadecodigo.javabank.managers.AccountManager;
@@ -25,9 +26,11 @@ public class BankInterface {
     }
 
     public void init() {
-        bank.addCustomer(customer);
-        System.out.println(customer.openAccount(AccountType.CHECKING));
-        System.out.println(customer.openAccount(AccountType.SAVINGS));
+        /*bank.addCustomer(customer);
+        System.out.println(customer.openAccount(AccountType.CHECKING, "rodrigo"));
+        System.out.println(customer.openAccount(AccountType.SAVINGS, "rodrigo"));
+        accountManager.deposit(2, 100);
+        System.out.println(customer.getName());*/
 
 
         Prompt prompt = new Prompt(System.in, System.out);
@@ -36,11 +39,16 @@ public class BankInterface {
         IntegerInputScanner userID = new IntegerInputScanner();
         userID.setMessage("Please insert the customer ID: \n");
         int showID = prompt.getUserInput(userID);
-        System.out.println(showID + " user ID");
+        System.out.println("user ID: " + showID);
+
+        StringInputScanner userName = new StringInputScanner();
+        userName.setMessage("Insert Customer Name's: \n");
+        String showName = prompt.getUserInput(userName);
+        System.out.println("User Name: " + showName);
 
         accountVerification = new AccountVerification(customer);
 
-        if (accountVerification.verify(showID)){
+        if (accountVerification.verify(showID, showName)){
             System.out.println("Java Bank Client");
         }
         else{
@@ -52,9 +60,9 @@ public class BankInterface {
             System.out.println(newCustomer[answer - 1]);
             if (answer==1) {
                 bank.addCustomer(customer);
-                System.out.println(customer.openAccount(AccountType.SAVINGS));
-                System.out.println(customer.openAccount(AccountType.CHECKING));
+                System.out.println(customer.openAccount(AccountType.SAVINGS, showName));
 
+                System.out.println(customer.getName());
 
             }
             else{
@@ -64,6 +72,13 @@ public class BankInterface {
 
         }
 while(true) {
+    System.out.println("*******************************************************************************");
+    System.out.println("Client Name: " + customer.getName() +
+            " Client Account ID: " + showID +
+            " Account balance: " + customer.getBalance(showID) +
+            " Client total balance: " + customer.getBalance());
+    System.out.println("*******************************************************************************");
+
     String[] options = {"View Balance", "Make Deposit", "Make Withdraw", "Open Account", "Transfer Money", "Quit"};
     MenuInputScanner scanner = new MenuInputScanner(options);
     scanner.setMessage("Welcome to Java Bank");
@@ -97,12 +112,19 @@ while(true) {
             int accountType = prompt.getUserInput(scanner1);
             System.out.println(newAccount[accountType - 1]);
             if (accountType==1){
-                customer.openAccount(AccountType.CHECKING);
-                System.out.println("opening checking account");
+                int accNr = customer.openAccount(AccountType.CHECKING, showName);
+                System.out.println("opening checking account number: " + accNr);
             }
             else {
-                customer.openAccount(AccountType.SAVINGS);
+                System.out.println("How Much do you want deposit? (minimum 100.00)");
+                int firstSavingDeposit = scan.nextInt();
+                if (firstSavingDeposit<100){
+                    System.out.println("can't open saving account with less then 100.00");
+                    break;
+                }
+                accountManager.deposit(customer.openAccount(AccountType.SAVINGS, showName), firstSavingDeposit);
                 System.out.println("opening saving account");
+
             }
             break;
         case 5:
@@ -112,9 +134,14 @@ while(true) {
             int account2 = scan.nextInt();
             System.out.println("Amount to transfer: ");
             int amount = scan.nextInt();
-            accountManager.transfer(account1,account2, amount);
-            System.out.println("Balance in account = " + account1 + customer.getBalance(account1));
-            System.out.println("Balance in account = " + account2 + customer.getBalance(account2));
+            if (accountVerification.verify(account1, showName) && accountVerification.verify(account2, showName)) {
+                accountManager.transfer(account1, account2, amount);
+                System.out.println("Balance in account " + account1 + ": " + customer.getBalance(account1));
+                System.out.println("Balance in account " + account2 + ": " + customer.getBalance(account2));
+            }
+            else{
+                System.out.println("Insert correct account to transfer");
+            }
             break;
         case 6:
             System.out.println("Thanks for comming");

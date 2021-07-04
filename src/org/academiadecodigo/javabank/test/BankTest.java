@@ -22,10 +22,10 @@ public class BankTest {
         bank.addCustomer(c1);
         bank.addCustomer(c2);
 
-        int a1 = c1.openAccount(AccountType.CHECKING);
-        int a2 = c1.openAccount(AccountType.SAVINGS);
-        int a3 = c2.openAccount(AccountType.CHECKING);
-        int a4 = c2.openAccount(AccountType.SAVINGS);
+        int a1 = c1.openAccount(AccountType.CHECKING, "");
+        int a2 = c1.openAccount(AccountType.SAVINGS, "");
+        int a3 = c2.openAccount(AccountType.CHECKING, "");
+        int a4 = c2.openAccount(AccountType.SAVINGS, "");
 
         accountManager.deposit(a1, 10);
         accountManager.deposit(a2, 20);

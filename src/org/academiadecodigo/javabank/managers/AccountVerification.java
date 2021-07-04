@@ -12,11 +12,13 @@ public class AccountVerification {
     public AccountVerification(Customer customer){
         this.customer = customer;
     }
-    public boolean verify(int id){
+    public boolean verify(int id, String name){
         this.id = id;
         if(customer.hasAccount(id)) {
             System.out.println("has account");
-            return true;
+            if (customer.getName().equals(name)) {
+                return true;
+            }
         }
         System.out.println("don't have account");
         return false;
